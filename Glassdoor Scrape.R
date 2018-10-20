@@ -11,7 +11,7 @@ library(rvest)
 url <- 'https://www.glassdoor.com/Jobs/Lyft-Jobs-E700614.htm'
 html <- read_html(url)
 
-      # Filter through pages
+      # Filter through pages **INCOMPLETE**
 
 # get_last_page <- function(html){
 # 
@@ -46,7 +46,7 @@ job_attr <- html %>%
   filter(. != "span-1-2 inlineBlock blockMob") 
 
 
-# create columns
+# create columns for position, location, Data_ID
 position <- job_attr[,1][seq(from = 9, to = length(job_attr[,1])-7, by = 13)] %>% as.data.frame()
 location <- job_attr[,1][seq(from = 10, to = length(job_attr[,1])-7, by = 13)] %>% as.data.frame()
 Data_ID <- job_attr[,1][seq(from = 2, to = length(job_attr[,1])-7, by = 13)] %>% as.data.frame()
@@ -57,4 +57,3 @@ colnames(df) <- c("Position", "Location", "Data_ID")
 
 
 View(df)
-
