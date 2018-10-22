@@ -34,7 +34,7 @@ first_page <- read_html(url)
 
 url_base <- str_remove(url, ".htm")
 
-list_of_pages <- str_c(url_base, " P", grep("[0-9]", 1:latest_page_number, value = TRUE), ".htm")
+list_of_pages <- str_c(url_base, "_P", grep("[0-9]", 1:latest_page_number, value = TRUE), ".htm")
 
 list_of_pages
 
