@@ -21,15 +21,12 @@ get_last_page <- function(html){
   
   pages_data <- pg %>%
     # The '.' indicates the class
-    html_nodes(".page.last") %>%
+    html_nodes(".padVertSm") %>%
     # Extract the raw text as a list
     html_text()
   
-  pages_data[(length(pages_data))] %>%
-    # Take the raw string
-    unname() %>%
-    # Convert to number
-    as.numeric()
+    pages_data %>% 
+      regmatches(regexpr('[0-9]$|[0-9][0-9]$', pages_data))
 }
 
 get_data_table <- function(html, company){
@@ -63,9 +60,9 @@ get_data_from_url <- function(url, company){
 scrape_write_table <- function(url, company){
   
   first_page <- read_html(url)
-  (latest_page_number <- get_last_page(first_page))
+  latest_page_number <- get_last_page()
   url_base <- str_remove(url, ".htm")
-  list_of_pages <- str_c(url_base, "_IP", grep("[0-9]", 1:latest_page_number, value = TRUE), ".htm")
+  list_of_pages <- str_c(url_base, "_IP", grep("[0-999]", 1:latest_page_number, value = TRUE), ".htm")
   
   # Apply the extraction and bind the individual results back into one table, 
   # which is then written as a tsv file into the working directory
