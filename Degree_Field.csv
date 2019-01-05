@@ -1,0 +1,49 @@
+"","cities2","degree_field","Percent_of_jobs_degree"
+"1","New York","accounting",0.065450643776824
+"2","New York","computer_science",0.262875536480687
+"3","New York","finance",0.221030042918455
+"4","New York","economics",0.155579399141631
+"5","New York","engineering",0.258583690987124
+"6","New York","statistics",0.256437768240343
+"7","New York","mathematics",0.171673819742489
+"8","New York","information_technology",0.0407725321888412
+"9","New York","physics",0.0236051502145923
+"10","New York","software_engineering",0.0171673819742489
+"11","New York","business",0.780042918454936
+"12","New York","information_systems",0.065450643776824
+"13","Boston","accounting",0.0984759671746776
+"14","Boston","computer_science",0.263774912075029
+"15","Boston","finance",0.24736225087925
+"16","Boston","economics",0.174677608440797
+"17","Boston","engineering",0.249706916764361
+"18","Boston","statistics",0.249706916764361
+"19","Boston","mathematics",0.157092614302462
+"20","Boston","information_technology",0.0738569753810082
+"21","Boston","physics",0.0386869871043376
+"22","Boston","software_engineering",0.0152403282532239
+"23","Boston","business",0.819460726846424
+"24","Boston","information_systems",0.0726846424384525
+"25","Washington","accounting",0.100112485939258
+"26","Washington","computer_science",0.219347581552306
+"27","Washington","finance",0.1214848143982
+"28","Washington","economics",0.106861642294713
+"29","Washington","engineering",0.331833520809899
+"30","Washington","statistics",0.203599550056243
+"31","Washington","mathematics",0.133858267716535
+"32","Washington","information_technology",0.173228346456693
+"33","Washington","physics",0.0292463442069741
+"34","Washington","software_engineering",0.0269966254218223
+"35","Washington","business",0.68503937007874
+"36","Washington","information_systems",0.146231721034871
+"37","Philadelphia","accounting",0.12372304199773
+"38","Philadelphia","computer_science",0.244040862656073
+"39","Philadelphia","finance",0.232690124858116
+"40","Philadelphia","economics",0.0930760499432463
+"41","Philadelphia","engineering",0.212258796821793
+"42","Philadelphia","statistics",0.147559591373439
+"43","Philadelphia","mathematics",0.119182746878547
+"44","Philadelphia","information_technology",0.0976163450624291
+"45","Philadelphia","physics",0.0113507377979569
+"46","Philadelphia","software_engineering",0.0238365493757094
+"47","Philadelphia","business",0.795686719636776
+"48","Philadelphia","information_systems",0.120317820658343

@@ -1,0 +1,33 @@
+"","cities1","language","Percent_of_jobs_language"
+"1","New York","Python",0.34656652360515
+"2","New York","SQL",0.562231759656652
+"3","New York","R",0.0793991416309013
+"4","New York","Java",0.123390557939914
+"5","New York","Matlab",0.0386266094420601
+"6","New York","Scala",0.163090128755365
+"7","New York","SAS",0.218884120171674
+"8","New York","Julia",0.00536480686695279
+"9","Boston","Python",0.241500586166471
+"10","Boston","SQL",0.460726846424385
+"11","Boston","R",0.0703399765533411
+"12","Boston","Java",0.106682297772567
+"13","Boston","Matlab",0.0386869871043376
+"14","Boston","Scala",0.152403282532239
+"15","Boston","SAS",0.24736225087925
+"16","Boston","Julia",0
+"17","Washington","Python",0.155230596175478
+"18","Washington","SQL",0.331833520809899
+"19","Washington","R",0.0359955005624297
+"20","Washington","Java",0.0753655793025872
+"21","Washington","Matlab",0.0224971878515186
+"22","Washington","Scala",0.0416197975253093
+"23","Washington","SAS",0.188976377952756
+"24","Washington","Julia",0.00224971878515186
+"25","Philadelphia","Python",0.152099886492622
+"26","Philadelphia","SQL",0.42905788876277
+"27","Philadelphia","R",0.039727582292849
+"28","Philadelphia","Java",0.111237230419977
+"29","Philadelphia","Matlab",0.0249716231555051
+"30","Philadelphia","Scala",0.137343927355278
+"31","Philadelphia","SAS",0.154370034052213
+"32","Philadelphia","Julia",0.00340522133938706
