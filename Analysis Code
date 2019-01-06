@@ -1,0 +1,305 @@
+library(stringr)
+library(dplyr)
+library(ggplot2)
+
+df <- read.csv('file:///C:/Users/Tanner/Documents/SpringBoard/Capstone/Glassdoor.csv')
+
+# create dataframe with all cities
+all_cities <- rbind(New_York, Boston, Washington, Philadelphia)
+
+# remove NA's from dataframes (10 total)
+all_cities <- all_cities[complete.cases(all_cities), ]
+
+# remove NA's from dataframes (10 total)
+New_York <- New_York[complete.cases(New_York), ]
+Boston <- Boston[complete.cases(Boston), ]
+Washington <- Washington[complete.cases(Washington), ]
+Philadelphia <- Philadelphia[complete.cases(Philadelphia), ]
+
+# create dataframe with all cities
+all_cities <- rbind(New_York, Boston, Washington, Philadelphia)
+
+## create columns with binary variables for keyword instances
+
+# programming languages
+New_York <- New_York %>% 
+  mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(R = ifelse(grepl("\\s[R]\\s", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(java = ifelse(grepl("java", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(matlab = ifelse(grepl("matlab", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(scala = ifelse(grepl("scala", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
+
+Boston <- Boston %>% 
+  mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(R = ifelse(grepl("\\s[R]\\s", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(java = ifelse(grepl("java", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(matlab = ifelse(grepl("matlab", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(scala = ifelse(grepl("scala", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
+  
+Washington <- Washington %>% 
+  mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(R = ifelse(grepl("\\s[R]\\s", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(java = ifelse(grepl("java", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(matlab = ifelse(grepl("matlab", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(scala = ifelse(grepl("scala", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
+  
+Philadelphia <- Philadelphia %>% 
+  mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(R = ifelse(grepl("\\s[R]\\s", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(java = ifelse(grepl("java", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(matlab = ifelse(grepl("matlab", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(scala = ifelse(grepl("scala", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
+
+Percent_of_jobs_language <-  c(mean(New_York$python), mean(New_York$sql), mean(New_York$R),
+                            mean(New_York$java), mean(New_York$matlab), mean(New_York$scala),
+                            mean(New_York$sas), mean(New_York$julia), 
+                            
+                            mean(Boston$python), mean(Boston$sql), mean(Boston$R), mean(Boston$java), 
+                            mean(Boston$matlab), mean(Boston$scala), mean(Boston$sas), mean(Boston$julia), 
+                            
+                            mean(Washington$python), mean(Washington$sql), 
+                            mean(Washington$R), mean(Washington$java), mean(Washington$matlab), 
+                            mean(Washington$scala), mean(Washington$sas), mean(Washington$julia),
+                            
+                            mean(Philadelphia$python), mean(Philadelphia$sql), mean(Philadelphia$R),
+                            mean(Philadelphia$java), mean(Philadelphia$matlab), mean(Philadelphia$scala),
+                            mean(Philadelphia$sas), mean(Philadelphia$julia))
+
+language <- c('Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia', 
+             'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia',
+             'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia',
+             'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia')
+
+
+cities1 <- c('New York', 'New York', 'New York', 'New York', 
+            'New York', 'New York', 'New York', 'New York',
+            'Boston', 'Boston', 'Boston', 'Boston', 
+            'Boston', 'Boston', 'Boston', 'Boston',
+            'Washington', 'Washington', 'Washington', 'Washington',
+            'Washington', 'Washington', 'Washington', 'Washington',
+            'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia',
+            'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia')
+
+language_df <- tibble(cities1, language, Percent_of_jobs_language)
+View(language_df)
+rename(language_df, City = cities1, Language = language, Percent_of_jobs = Percent_of_jobs_language)
+
+# Create graph of percent of languages for all cities combined 
+Percent_of_jobs_language_all <- Percent_of_jobs_language/4
+
+g <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language_all)) 
+
+g + geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))+
+  ggtitle("Language Skills For All Cities")
+
+# Create graph of percent of languages for each city
+g <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language)) 
+
+g + geom_bar(stat = 'identity') +
+  facet_grid(. ~ cities1) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
+  ggtitle("Language Skills For Individual Cities")
+
+# 
+sql_all <- sum(mean(New_York$sql), mean(Boston$sql), 
+               mean(Washington$sql), mean(Philadelphia$sql))/4
+
+julia_all <- sum(mean(New_York$julia), mean(Boston$julia), 
+                 mean(Washington$julia), mean(Philadelphia$julia))/4
+
+# degree fields
+New_York <- New_York %>% 
+  mutate(accounting = ifelse(grepl("accounting", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(computer_science = ifelse(grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(finance = ifelse(grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(economics = ifelse(grepl("economics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(engineering = ifelse(grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(statistics = ifelse(grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(mathematics = ifelse(grepl("mathematics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(information_technology = ifelse(grepl("information technology", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(physics = ifelse(grepl("physics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(software_engineering = ifelse(grepl("software engineering", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(chemistry = ifelse(grepl("chemistry", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(information_systems = ifelse(grepl("information systems", job_description, ignore.case = TRUE), 1, 0)) 
+  
+
+Boston <- Boston %>% 
+  mutate(accounting = ifelse(grepl("accounting", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(computer_science = ifelse(grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(finance = ifelse(grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(economics = ifelse(grepl("economics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(engineering = ifelse(grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(statistics = ifelse(grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(mathematics = ifelse(grepl("mathematics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(information_technology = ifelse(grepl("information technology", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(physics = ifelse(grepl("physics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(software_engineering = ifelse(grepl("software engineering", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(chemistry = ifelse(grepl("chemistry", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(information_systems = ifelse(grepl("information systems", job_description, ignore.case = TRUE), 1, 0)) 
+  
+
+Washington <- Washington %>% 
+  mutate(accounting = ifelse(grepl("accounting", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(computer_science = ifelse(grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(finance = ifelse(grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(economics = ifelse(grepl("economics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(engineering = ifelse(grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(statistics = ifelse(grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(mathematics = ifelse(grepl("mathematics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(information_technology = ifelse(grepl("information technology", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(physics = ifelse(grepl("physics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(software_engineering = ifelse(grepl("software engineering", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(chemistry = ifelse(grepl("chemistry", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(information_systems = ifelse(grepl("information systems", job_description, ignore.case = TRUE), 1, 0)) 
+  
+
+Philadelphia <- Philadelphia %>% 
+  mutate(accounting = ifelse(grepl("accounting", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(computer_science = ifelse(grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(finance = ifelse(grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(economics = ifelse(grepl("economics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(engineering = ifelse(grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(statistics = ifelse(grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(mathematics = ifelse(grepl("mathematics", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(information_technology = ifelse(grepl("information technology", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(physics = ifelse(grepl("physics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(software_engineering = ifelse(grepl("software engineering", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(chemistry = ifelse(grepl("chemistry", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(information_systems = ifelse(grepl("information systems", job_description, ignore.case = TRUE), 1, 0)) 
+  
+
+Percent_of_jobs_degree <-  c(mean(New_York$accounting), mean(New_York$computer_science), mean(New_York$finance),
+                      mean(New_York$economics), mean(New_York$engineering), mean(New_York$statistics),
+                      mean(New_York$mathematics), mean(New_York$information_technology), 
+                      mean(New_York$physics), mean(New_York$software_engineering), mean(New_York$chemistry), 
+                      mean(New_York$information_systems),
+                      
+                      mean(Boston$accounting), mean(Boston$computer_science), mean(Boston$finance),
+                      mean(Boston$economics), mean(Boston$engineering), mean(Boston$statistics),
+                      mean(Boston$mathematics), mean(Boston$information_technology), 
+                      mean(Boston$physics), mean(Boston$software_engineering), mean(Boston$chemistry), 
+                      mean(Boston$information_systems),
+                      
+                      mean(Washington$accounting), mean(Washington$computer_science), mean(Washington$finance),
+                      mean(Washington$economics), mean(Washington$engineering), mean(Washington$statistics),
+                      mean(Washington$mathematics), mean(Washington$information_technology), 
+                      mean(Washington$physics), mean(Washington$software_engineering), mean(Washington$chemistry), 
+                      mean(Washington$information_systems),
+                      
+                      mean(Philadelphia$accounting), mean(Philadelphia$computer_science), mean(Philadelphia$finance),
+                      mean(Philadelphia$economics), mean(Philadelphia$engineering), mean(Philadelphia$statistics),
+                      mean(Philadelphia$mathematics), mean(Philadelphia$information_technology), 
+                      mean(Philadelphia$physics), mean(Philadelphia$software_engineering), mean(Philadelphia$chemistry), 
+                      mean(Philadelphia$information_systems))
+
+
+degree_field <- c('accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
+                  'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems', 
+                  'accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
+                  'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems', 
+                  'accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
+                  'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems', 
+                  'accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
+                  'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems')
+
+cities2 <- c('New York', 'New York', 'New York', 'New York', 
+             'New York', 'New York', 'New York', 'New York',
+             'New York', 'New York', 'New York', 'New York',
+             'Boston', 'Boston', 'Boston', 'Boston', 
+             'Boston', 'Boston', 'Boston', 'Boston',
+             'Boston', 'Boston', 'Boston', 'Boston',
+             'Washington', 'Washington', 'Washington', 'Washington',
+             'Washington', 'Washington', 'Washington', 'Washington',
+             'Washington', 'Washington', 'Washington', 'Washington',
+             'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia',
+             'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia',
+             'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia')
+
+degree_field_df <- tibble(cities2, degree_field, Percent_of_jobs_degree)
+rename(degree_field_df, City = cities2, Degree.Field = degree_field, Percent_of_jobs = Percent_of_jobs_degree)
+
+# Create graph for percentage of degree field for all cities combined
+Percent_of_jobs_degree_all <- Percent_of_jobs_degree/4
+
+g <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree_all)) 
+
+g + geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
+  ggtitle("Degree Field For All Cities")
+
+# Create graph for percentage of degree field for cities individually 
+g <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree)) 
+
+g + geom_bar(stat = 'identity') +
+  facet_grid(. ~ cities2) +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1))+
+  ggtitle("Degree Field For Individual Cities")
+
+# Engineering degree 
+engineering_all <- sum(mean(New_York$engineering), mean(Boston$engineering), 
+                       mean(Washington$engineering), mean(Philadelphia$engineering))/4
+
+# Top Language / Degree Combinations
+all_cities <- all_cities %>% 
+  
+  mutate(sql_computer_science = ifelse(grepl("sql", job_description, ignore.case = TRUE) &
+                                grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql_engineering = ifelse(grepl("sql", job_description, ignore.case = TRUE) &
+                                    grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(sql_finance = ifelse(grepl("sql", job_description, ignore.case = TRUE) &
+                                    grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(sql_statistics = ifelse(grepl("sql", job_description, ignore.case = TRUE) &
+                                    grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(python_computer_science = ifelse(grepl("python", job_description, ignore.case = TRUE) &
+                                         grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(python_engineering = ifelse(grepl("python", job_description, ignore.case = TRUE) &
+                                    grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(python_finance = ifelse(grepl("python", job_description, ignore.case = TRUE) &
+                                grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(python_statistics = ifelse(grepl("python", job_description, ignore.case = TRUE) &
+                                   grepl("statistics", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas_computer_science = ifelse(grepl("sas", job_description, ignore.case = TRUE) &
+                                         grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas_engineering = ifelse(grepl("sas", job_description, ignore.case = TRUE) &
+                                    grepl("engineering", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(sas_finance = ifelse(grepl("sas", job_description, ignore.case = TRUE) &
+                                grepl("finance", job_description, ignore.case = TRUE), 1, 0)) %>%
+  mutate(sas_statistics = ifelse(grepl("sas", job_description, ignore.case = TRUE) &
+                                   grepl("statistics", job_description, ignore.case = TRUE), 1, 0))
+
+# combination names
+top_names <- c('sql_computer_science', 'sql_engineering', 'sql_finance', 'sql_statistics',
+               'python_computer_science', 'python_engineering', 'python_finance', 'python_statistics',
+               'sas_computer_science', 'sas_engineering', 'sas_finance', 'sas_statistics')
+
+
+Percent_of_jobs_top <- c(mean(all_cities$sql_computer_science), mean(all_cities$sql_engineering), mean(all_cities$sql_finance),
+                             mean(all_cities$sql_statistics), mean(all_cities$python_computer_science), mean(all_cities$python_engineering),
+                             mean(all_cities$python_finance), mean(all_cities$python_statistics), 
+                             mean(all_cities$sas_computer_science), mean(all_cities$sas_engineering), mean(all_cities$sas_finance), 
+                             mean(all_cities$sas_statistics))
+
+top_df <- tibble(top_names, Percent_of_jobs_top)
+
+# Create graph for top combinations
+
+g <- ggplot(top_df, aes(x = top_names, y = Percent_of_jobs_top)) 
+
+g + geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 50, hjust = 1)) + 
+ ggtitle("Top language/degree combinations")
+
+
