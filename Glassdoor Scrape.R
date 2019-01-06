@@ -1,46 +1,79 @@
 # Packages
 library(tidyverse) 
 library(dplyr)
-library(rvest)    
+library(rvest)
 library(stringr)
+library(purrr)
+library(stringi)
 
-# Open page in html
-url = 'https://www.glassdoor.com/Job/new-york-data-analyst-jobs-SRCH_IL.0,8_IC1132348_KO9,21.htm'
-pg = read_html(url)
+page_result_start <- 1 # starting page 
+page_result_end <- 30  # last page results
 
-# Get number of pages
-get_last_page <- function(html){
+full_df <- data.frame()
+for(i in page_result_start:page_result_end) {
   
-  pages_data <- pg %>%
-    html_nodes(".padVertSm") %>%
-    html_text()
+  url_base <- "https://glassdoor.com/Job/new-york-data-analyst-jobs-SRCH_IL.0,8_IC1132348_KO9,21.htm"
+  url <- paste0(url_base, "_IP", i, ".htm")
+  page <- xml2::read_html(url)
   
-  pages_data %>% 
-    regmatches(regexpr('[0-9][0-9][0-9]$', pages_data))
+  # Sys.sleep pauses R for two seconds before it resumes
+  # Putting it there avoids error messages such as "Error in open.connection(con, "rb") : Timeout was reached"
+  Sys.sleep(2)
+  
+  # get the job title
+  job_title <- page %>% 
+    html_nodes(".jobTitle") %>% 
+    html_text() %>% 
+    subset(. != '') 
+
+  # get the company name
+  company_name <- page %>%
+    html_nodes("span")  %>%
+    html_nodes(xpath = '//*[@id="MainCol"]/div/ul/li/div/div/div/text()')  %>%
+    html_text() %>% 
+    subset(. != 'New') %>% 
+    subset(. != 'Hot') %>% 
+    subset(. != "We're Hiring") %>% 
+    subset(. != "Top Company") %>%
+    stri_trim_both()
+  
+  # remove hyphens at end of company name
+  company_name <- gsub('[^[:alnum:][:blank:]?&/\\-]', '', company_name)
+  
+  # get job location
+  job_location <- page %>% 
+    html_nodes(".loc") %>% 
+    html_text() %>% 
+    subset(. != '')
+  
+  # get links
+  links <- page %>%
+    html_nodes("div") %>%
+    html_nodes(xpath = '//*[@id="MainCol"]/div/ul/li/div[2]/div[1]/div[1]/a') %>%
+    html_attr("href")
+  
+  # get job description
+  job_description <- c()
+  for(i in seq_along(links)) {
+    
+    url <- paste0("https://www.glassdoor.com", links[i])
+    
+    result <- try({  
+      
+    page <- xml2::read_html(url)
+    job_description[[i]] <- page %>%
+      html_nodes("div")  %>%
+      html_nodes('.jobDesc') %>%
+      html_text() %>% 
+      stri_trim_both()
+    } ,silent = TRUE)
+    
+if(!inherits(result, "try-error")) result
+    }
+   
+    
+  df <- data.frame(job_title, company_name, job_location, job_description)
+  full_df <- rbind(full_df, df)
 }
-maxresults <- get_last_page()
-url_base <- str_remove(url, ".htm")
-
-# Create dataframe
-df <- map_df(1:30, function(i) {
-  
-  Sys.sleep(sample(seq(1, 5, by=0.01), 1))   
-  
-  cat("boom! ")   #progress indicator
-  
-  list_of_pages <- read_html(paste0(url_base, "_IP", i, ".htm"))
-
-  data.frame(Job = html_text(html_nodes(list_of_pages, '.jobTitle')) %>% 
-               subset(. != ''), 
-             Location = html_text(html_nodes(list_of_pages, '.loc')) %>% 
-               subset(. != ''),
-             Summary = html_text(html_nodes(list_of_pages, '.jl')),
-             stringsAsFactors=F)
-})
-
-df <- df %>% 
-  mutate(python = ifelse(grepl("python", Summary, ignore.case = TRUE), 1, 0)) %>% 
-  mutate(sql = ifelse(grepl("sql", Summary, ignore.case = TRUE), 1, 0)) %>% 
-  mutate(java = ifelse(grepl("java", Summary, ignore.case = TRUE), 1, 0))
 
 
