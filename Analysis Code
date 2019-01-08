@@ -2,7 +2,11 @@ library(stringr)
 library(dplyr)
 library(ggplot2)
 
-df <- read.csv('file:///C:/Users/Tanner/Documents/SpringBoard/Capstone/Glassdoor.csv')
+# Load data frame for each city
+# New_York <- read.csv('')
+# Boston <- read.csv('')
+# Washington <- read.csv('')
+# Philadelphia <- read.csv('')
 
 # create dataframe with all cities
 all_cities <- rbind(New_York, Boston, Washington, Philadelphia)
@@ -16,12 +20,7 @@ Boston <- Boston[complete.cases(Boston), ]
 Washington <- Washington[complete.cases(Washington), ]
 Philadelphia <- Philadelphia[complete.cases(Philadelphia), ]
 
-# create dataframe with all cities
-all_cities <- rbind(New_York, Boston, Washington, Philadelphia)
-
-## create columns with binary variables for keyword instances
-
-# programming languages
+# Create columns with binary variabes for programming languages
 New_York <- New_York %>% 
   mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
   mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
@@ -62,6 +61,7 @@ Philadelphia <- Philadelphia %>%
   mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
   mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
 
+# Find percent of programming languages in job postings per city
 Percent_of_jobs_language <-  c(mean(New_York$python), mean(New_York$sql), mean(New_York$R),
                             mean(New_York$java), mean(New_York$matlab), mean(New_York$scala),
                             mean(New_York$sas), mean(New_York$julia), 
@@ -77,12 +77,13 @@ Percent_of_jobs_language <-  c(mean(New_York$python), mean(New_York$sql), mean(N
                             mean(Philadelphia$java), mean(Philadelphia$matlab), mean(Philadelphia$scala),
                             mean(Philadelphia$sas), mean(Philadelphia$julia))
 
+# Create programming language names for language data frame 
 language <- c('Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia', 
              'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia',
              'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia',
              'Python', 'SQL', 'R', 'Java', 'Matlab', 'Scala', 'SAS', 'Julia')
 
-
+# Create city names for language data frame 
 cities1 <- c('New York', 'New York', 'New York', 'New York', 
             'New York', 'New York', 'New York', 'New York',
             'Boston', 'Boston', 'Boston', 'Boston', 
@@ -92,35 +93,37 @@ cities1 <- c('New York', 'New York', 'New York', 'New York',
             'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia',
             'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia')
 
+# Create language data frame 
 language_df <- tibble(cities1, language, Percent_of_jobs_language)
-View(language_df)
+
 rename(language_df, City = cities1, Language = language, Percent_of_jobs = Percent_of_jobs_language)
 
 # Create graph of percent of languages for all cities combined 
 Percent_of_jobs_language_all <- Percent_of_jobs_language/4
 
-g <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language_all)) 
+graph_lang_all <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language_all)) 
 
-g + geom_bar(stat = 'identity') +
+graph_lang_all + geom_bar(stat = 'identity') +
   theme(axis.text.x = element_text(angle = 50, hjust = 1))+
   ggtitle("Language Skills For All Cities")
 
 # Create graph of percent of languages for each city
-g <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language)) 
+graph_lang_each <- ggplot(language_df, aes(x = language, y = Percent_of_jobs_language)) 
 
-g + geom_bar(stat = 'identity') +
+graph_lang_each + geom_bar(stat = 'identity') +
   facet_grid(. ~ cities1) +
-  theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   ggtitle("Language Skills For Individual Cities")
 
-# 
-sql_all <- sum(mean(New_York$sql), mean(Boston$sql), 
-               mean(Washington$sql), mean(Philadelphia$sql))/4
+# Find percent of sql in all job postings
+sql_all <- sum(New_York$sql, Boston$sql, 
+               Washington$sql, Philadelphia$sql)/3544
 
-julia_all <- sum(mean(New_York$julia), mean(Boston$julia), 
-                 mean(Washington$julia), mean(Philadelphia$julia))/4
+# Find percent of julia in all job postings
+julia_all <- sum(New_York$julia, Boston$julia, 
+                 Washington$julia, Philadelphia$julia)/3544
 
-# degree fields
+# Create binary columns for degree fields
 New_York <- New_York %>% 
   mutate(accounting = ifelse(grepl("accounting", job_description, ignore.case = TRUE), 1, 0)) %>% 
   mutate(computer_science = ifelse(grepl("computer science", job_description, ignore.case = TRUE), 1, 0)) %>% 
@@ -180,7 +183,7 @@ Philadelphia <- Philadelphia %>%
   mutate(chemistry = ifelse(grepl("chemistry", job_description, ignore.case = TRUE), 1, 0)) %>% 
   mutate(information_systems = ifelse(grepl("information systems", job_description, ignore.case = TRUE), 1, 0)) 
   
-
+# Find percent of degree fields in job postings per city
 Percent_of_jobs_degree <-  c(mean(New_York$accounting), mean(New_York$computer_science), mean(New_York$finance),
                       mean(New_York$economics), mean(New_York$engineering), mean(New_York$statistics),
                       mean(New_York$mathematics), mean(New_York$information_technology), 
@@ -205,7 +208,7 @@ Percent_of_jobs_degree <-  c(mean(New_York$accounting), mean(New_York$computer_s
                       mean(Philadelphia$physics), mean(Philadelphia$software_engineering), mean(Philadelphia$chemistry), 
                       mean(Philadelphia$information_systems))
 
-
+# Create names for degree field data frame
 degree_field <- c('accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
                   'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems', 
                   'accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
@@ -215,6 +218,7 @@ degree_field <- c('accounting', 'computer_science', 'finance', 'economics', 'eng
                   'accounting', 'computer_science', 'finance', 'economics', 'engineering', 'statistics', 'mathematics', 
                   'information_technology', 'physics', 'software_engineering', 'chemistry', 'information_systems')
 
+# Create city names for degreee field data frame
 cities2 <- c('New York', 'New York', 'New York', 'New York', 
              'New York', 'New York', 'New York', 'New York',
              'New York', 'New York', 'New York', 'New York',
@@ -228,31 +232,32 @@ cities2 <- c('New York', 'New York', 'New York', 'New York',
              'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia',
              'Philadelphia', 'Philadelphia', 'Philadelphia', 'Philadelphia')
 
+# Create data frame for degree field
 degree_field_df <- tibble(cities2, degree_field, Percent_of_jobs_degree)
 rename(degree_field_df, City = cities2, Degree.Field = degree_field, Percent_of_jobs = Percent_of_jobs_degree)
 
 # Create graph for percentage of degree field for all cities combined
 Percent_of_jobs_degree_all <- Percent_of_jobs_degree/4
 
-g <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree_all)) 
+graph_degree_all <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree_all)) 
 
-g + geom_bar(stat = 'identity') +
+graph_degree_all + geom_bar(stat = 'identity') +
   theme(axis.text.x = element_text(angle = 50, hjust = 1)) +
   ggtitle("Degree Field For All Cities")
 
 # Create graph for percentage of degree field for cities individually 
-g <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree)) 
+graph_degree_each <- ggplot(degree_field_df, aes(x = degree_field, y = Percent_of_jobs_degree)) 
 
-g + geom_bar(stat = 'identity') +
+graph_degree_each + geom_bar(stat = 'identity') +
   facet_grid(. ~ cities2) +
-  theme(axis.text.x = element_text(angle = 50, hjust = 1))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))+
   ggtitle("Degree Field For Individual Cities")
 
-# Engineering degree 
-engineering_all <- sum(mean(New_York$engineering), mean(Boston$engineering), 
-                       mean(Washington$engineering), mean(Philadelphia$engineering))/4
+# Find percent of engineering degree in all job postings
+engineering_all <- sum(New_York$engineering, Boston$engineering, 
+                       Washington$engineering, Philadelphia$engineering)/3544
 
-# Top Language / Degree Combinations
+# Create binary columns for Top Language / Degree Combinations
 all_cities <- all_cities %>% 
   
   mutate(sql_computer_science = ifelse(grepl("sql", job_description, ignore.case = TRUE) &
@@ -280,26 +285,83 @@ all_cities <- all_cities %>%
   mutate(sas_statistics = ifelse(grepl("sas", job_description, ignore.case = TRUE) &
                                    grepl("statistics", job_description, ignore.case = TRUE), 1, 0))
 
-# combination names
+# Create combination names
 top_names <- c('sql_computer_science', 'sql_engineering', 'sql_finance', 'sql_statistics',
                'python_computer_science', 'python_engineering', 'python_finance', 'python_statistics',
                'sas_computer_science', 'sas_engineering', 'sas_finance', 'sas_statistics')
 
-
+# Find percent of each combination in all job postings
 Percent_of_jobs_top <- c(mean(all_cities$sql_computer_science), mean(all_cities$sql_engineering), mean(all_cities$sql_finance),
                              mean(all_cities$sql_statistics), mean(all_cities$python_computer_science), mean(all_cities$python_engineering),
                              mean(all_cities$python_finance), mean(all_cities$python_statistics), 
                              mean(all_cities$sas_computer_science), mean(all_cities$sas_engineering), mean(all_cities$sas_finance), 
                              mean(all_cities$sas_statistics))
 
+# Create data frame of top programming language / degree field
 top_df <- tibble(top_names, Percent_of_jobs_top)
 
 # Create graph for top combinations
+graph_top <- ggplot(top_df, aes(x = top_names, y = Percent_of_jobs_top)) 
 
-g <- ggplot(top_df, aes(x = top_names, y = Percent_of_jobs_top)) 
-
-g + geom_bar(stat = 'identity') +
-  theme(axis.text.x = element_text(angle = 50, hjust = 1)) + 
+graph_top + geom_bar(stat = 'identity') +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) + 
  ggtitle("Top language/degree combinations")
 
 
+## Clustering
+
+# Remove unnecessary columns
+all_cities$job_title = NULL
+all_cities$job_location = NULL
+all_cities$company_name = NULL
+
+# Create data frame for clustering
+all_cities <- all_cities %>% 
+  mutate(python = ifelse(grepl("python", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sql = ifelse(grepl("sql", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(R = ifelse(grepl("\\s[R]\\s", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(java = ifelse(grepl("java", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(matlab = ifelse(grepl("matlab", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(scala = ifelse(grepl("scala", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(sas = ifelse(grepl("sas", job_description, ignore.case = TRUE), 1, 0)) %>% 
+  mutate(julia = ifelse(grepl("julia", job_description, ignore.case = TRUE), 1, 0))
+
+# Create euclidian distances between data points
+distances = dist(all_cities[3:10], method = "euclidian")
+
+# Create clustering algorithm
+clusterLanguages = hclust(distances, method = "ward")
+
+# Plot dendrogram
+plot(clusterLanguages)
+
+# Cluster data into 7 groups
+clusterGroups = cutree(clusterLanguages, k = 7)
+
+# Find means of programming languages in each cluster
+tapply(all_cities$python, clusterGroups, mean)
+tapply(all_cities$sql, clusterGroups, mean)
+tapply(all_cities$R, clusterGroups, mean)
+tapply(all_cities$java, clusterGroups, mean)
+tapply(all_cities$matlab, clusterGroups, mean)
+tapply(all_cities$scala, clusterGroups, mean)
+tapply(all_cities$sas, clusterGroups, mean)
+tapply(all_cities$julia, clusterGroups, mean)
+
+# Create subsets to tally
+cluster1 <- subset(all_cities, clusterGroups == 1)
+cluster2 <- subset(all_cities, clusterGroups == 2)
+cluster3 <- subset(all_cities, clusterGroups == 3)
+cluster4 <- subset(all_cities, clusterGroups == 4)
+cluster5 <- subset(all_cities, clusterGroups == 5)
+cluster6 <- subset(all_cities, clusterGroups == 6)
+cluster7 <- subset(all_cities, clusterGroups == 7)
+
+# Count occurances in clusters
+tally(cluster1)
+tally(cluster2)
+tally(cluster3)
+tally(cluster4)
+tally(cluster5)
+tally(cluster6)
+tally(cluster7)
