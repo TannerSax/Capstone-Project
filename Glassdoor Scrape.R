@@ -6,13 +6,19 @@ library(stringr)
 library(purrr)
 library(stringi)
 
+# Set as url_base to create data frame for desired city
+New_York_url <- "https://glassdoor.com/Job/new-york-data-analyst-jobs-SRCH_IL.0,8_IC1132348_KO9,21"
+Boston_url <- "https://www.glassdoor.com/Job/boston-data-analyst-jobs-SRCH_IL.0,6_IC1154532_KO7,19"
+Washington_url <- "https://www.glassdoor.com/Job/washington-data-analyst-jobs-SRCH_IL.0,10_IC1138213_KO11,23"
+Philadelphia_url <- "https://www.glassdoor.com/Job/philadelphia-data-analyst-jobs-SRCH_IL.0,12_IC1152672_KO13,25"
+
 page_result_start <- 1 # starting page 
 page_result_end <- 30  # last page results
 
 full_df <- data.frame()
 for(i in page_result_start:page_result_end) {
   
-  url_base <- "https://glassdoor.com/Job/new-york-data-analyst-jobs-SRCH_IL.0,8_IC1132348_KO9,21.htm"
+  url_base <- New_York_url
   url <- paste0(url_base, "_IP", i, ".htm")
   page <- xml2::read_html(url)
   
