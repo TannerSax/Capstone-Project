@@ -14,7 +14,7 @@
 * Philadelphia.csv        --    *Data frame from Glassdoor web scrape (Philadelphia)*
 * Presentation.pptx       --    *Final presentation in powerpoint*
 * README.md               --    *This document*
-* Report.docx             --    *Final Report*
+* **Report.docx             --    *Final Report***
 * Statistics.docx         --    *Statistical analysis milestone report*
 * Washington.csv          --    *Data frame from Glassdoor web scrape (Washington, D.C.)*
 
